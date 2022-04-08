@@ -8,13 +8,9 @@ type CampoProps = {
 
 
 export function Campo(props: CampoProps) {
-    let id:string = props.text.toLocaleLowerCase().replace(/ /g, '').replace(':','')
+    let id:string = props.text.toLocaleLowerCase().replace(/ /g, '')
 
     return( 
-        // <div>
-        //     <label htmlFor={id}>{props.text}</label><br/>
-        //     <input id={id} type="text" onChange={props.onChange}/>
-        // </div>
         <TextField
             margin="normal"
             fullWidth
