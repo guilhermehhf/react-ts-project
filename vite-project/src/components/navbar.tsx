@@ -30,7 +30,7 @@ export function Navbar() {
                      Form5
                   </Button>
                   <Box sx={{ flexGrow: 1 }}></Box>
-                  <SwitchLightDark />
+                  {/* <SwitchLightDark /> */}
                </Stack>
             </Toolbar>
          </AppBar>

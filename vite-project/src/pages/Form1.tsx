@@ -4,26 +4,14 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { myFetch } from '../utils/request.js';
+import { Regex } from '../utils/regex.js'
+import { SnackAlert } from '../components/alert'
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-   props,
-   ref,
-) {
-   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const regex2 = new Regex()
 
 export function Form1() {
-   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-   const minMaxRegex = /^.{6,12}$/
 
-   const [open, setOpen] = React.useState(false);
-   const [alertStatus, setAlertStatus] = useState({
-      message: '',
-      type: ''
-   })
    const [campos, setCampos] = useState({
       nome: '',
       email: '',
@@ -40,24 +28,19 @@ export function Form1() {
 
    function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
       ev.preventDefault()
-      const emailTest = emailRegex.test(campos['email'])
-      const nomeTest = minMaxRegex.test(campos['nome'])
-      const senhaTest = minMaxRegex.test(campos['senha'])
+      const emailTest = regex2.emailTest(campos['email'])
+      const nomeTest = regex2.minMaxTest(6,12,campos['nome'])
+      const senhaTest = regex2.minMaxTest(6,12,campos['senha'])
       const confirmarSenhaTest = campos['senha'] == campos['confirmarsenha']
+      console.log(emailTest, nomeTest, senhaTest, confirmarSenhaTest)
 
       if (emailTest && nomeTest && senhaTest && confirmarSenhaTest) {
-         setAlertStatus({...alertStatus, ['message']: 'Usuário criado com sucesso!', ['type']: 'success'})
+         <SnackAlert message = 'Usuário criado com sucesso!' type= 'success'/>
+         myFetch(`http://localhost:8081/users/${campos['nome']}/${campos['email']}/${campos['senha']}`, 'POST')
       }else{
-         setAlertStatus({...alertStatus, ['message']: 'Algum dos campos está inválido!', ['type']: 'error'})
+         <SnackAlert message = 'Algum dos campos está inválido!' type= 'error'/>
       }
-      setOpen(true);
    }
-   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-      setOpen(false);
-    };
 
    return (
       <div>
@@ -87,12 +70,6 @@ export function Form1() {
                </Box>
             </Box>
          </Container>
-
-         <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={alertStatus.type || 'warning'} sx={{ width: '100%' }}>
-               {alertStatus.message}
-            </Alert>
-         </Snackbar>
       </div>
    )
 }

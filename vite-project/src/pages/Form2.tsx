@@ -4,6 +4,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { myFetch } from '../utils/request.js';
+import { Regex } from '../utils/regex.js'
+import { SnackAlert } from '../components/alert'
+
+const regex2 = new Regex()
 
 export function Form2(){
     const [campos, setCampos] = useState({
@@ -21,10 +26,20 @@ export function Form2(){
     function onSubmit(ev: React.FormEvent<HTMLFormElement>){
         ev.preventDefault()
         console.log(campos)
+        const emailTest = regex2.emailTest(campos['email'])
+        const senhaTest = regex2.minMaxTest(6,12,campos['senha'])
+
+        // if (emailTest && senhaTest) {
+        //     <SnackAlert message = 'Usuário criado com sucesso!' type= 'success'/>
+        //     myFetch(`http://localhost:8081/users/${campos['email']}/${campos['senha']}`, 'GET')
+        //  }else{
+        //     <SnackAlert message = 'Algum dos campos está inválido!' type= 'error'/>
+        //  }
     }
 
     return(
         <div>
+            
             <Container component="main" maxWidth="xs" sx={{marginTop: 10}}>
                 <Box
                     sx={{
@@ -45,7 +60,7 @@ export function Form2(){
                         
                         <Campo text= 'Email' onChange = {onChange} />
                         <Campo text= 'Senha' onChange = {onChange} type='password' />
-                        <Button sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" fullWidth>Log-in</Button>
+                        <Button sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" fullWidth>Logar-se</Button>
                     </Box>
                 </Box>
             </Container>

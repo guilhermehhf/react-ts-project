@@ -4,19 +4,20 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Grid, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Grid, SelectChangeEvent, TextField } from "@mui/material";
+import { SelectLabels } from '../components/select'
 
 export function Form3() {
 
    const [campos, setCampos] = useState({
       titulodapostagem: '',
-      assunto: '',
-      descriçãodapostagem: ''
+      obra: '',
+      descricao: ''
    })
-   function test(text: boolean) {
 
-   }
+   const selectChange = (event: SelectChangeEvent) => {
+      setCampos({ ...campos, ['obra']: event.target.value});
+    };
 
    function onChange(ev: React.ChangeEvent<HTMLInputElement>) {
       let { id, value } = ev.currentTarget
@@ -32,7 +33,7 @@ export function Form3() {
    return (
       <div>
          <Container component="main" maxWidth="xs" sx={{ marginTop: 10, paddingBottom: 2 }}>
-            
+
             <Typography variant='h5'>Form3 - Criar Postagem</Typography>
             <Box
                onSubmit={onSubmit}
@@ -46,14 +47,7 @@ export function Form3() {
                      <Campo text='Titulo da postagem' onChange={onChange} />
                   </Grid>
                   <Grid item xs={6}>
-                     <TextField
-                        margin="normal"
-                        fullWidth
-                        required
-                        id='assunto'
-                        onChange={onChange}
-                        label='Assunto'
-                     />
+                     <SelectLabels onChange={selectChange}/>
                   </Grid>
                   <Grid item xs={12}>
                      <TextField
@@ -68,7 +62,7 @@ export function Form3() {
                      />
                   </Grid>
                   <Grid item xs={12}>
-                     <Button sx={{ mt: 2, mb: 2 }} component={Link} to="/" variant="contained" type="submit" fullWidth>Adicionar Postagem</Button>
+                     <Button sx={{ mt: 2, mb: 2 }} variant="contained" type="submit" fullWidth>Adicionar Postagem</Button>
                   </Grid>
                </Grid>
             </Box>
