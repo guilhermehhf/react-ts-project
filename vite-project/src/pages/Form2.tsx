@@ -49,7 +49,7 @@ export function Form2(){
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant='h5'>Form1 - Login</Typography>
+                    <Typography variant='h5'>Form2 - Login</Typography>
                     <Box
                         onSubmit={onSubmit}
                         component="form"
