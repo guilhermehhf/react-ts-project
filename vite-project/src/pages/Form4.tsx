@@ -34,7 +34,7 @@ export function Form4() {
       <div>
          <Container component="main" maxWidth="xs" sx={{ marginTop: 10, paddingBottom: 2 }}>
 
-            <Typography variant='h5'>Form3 - Criar Postagem</Typography>
+            <Typography variant='h5'>Form4 - Adicionar nova obra</Typography>
             <Box
                onSubmit={onSubmit}
                component="form"

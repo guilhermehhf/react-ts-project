@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { Campo } from "../components/campo";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Grid, SelectChangeEvent, TextField } from "@mui/material";
+import { Grid, Rating, SelectChangeEvent, TextField } from "@mui/material";
 import { SelectLabels } from '../components/select'
 
 export function Form3() {
 
    const [campos, setCampos] = useState({
-      titulodapostagem: '',
       obra: '',
-      descricao: ''
+      nota: 0,
+      opiniao: ''
    })
 
    const selectChange = (event: SelectChangeEvent) => {
-      setCampos({ ...campos, ['obra']: event.target.value});
-    };
+      setCampos({ ...campos, ['obra']: event.target.value });
+   };
 
    function onChange(ev: React.ChangeEvent<HTMLInputElement>) {
       let { id, value } = ev.currentTarget
@@ -34,7 +33,7 @@ export function Form3() {
       <div>
          <Container component="main" maxWidth="xs" sx={{ marginTop: 10, paddingBottom: 2 }}>
 
-            <Typography variant='h5'>Form3 - Criar Postagem</Typography>
+            <Typography variant='h5'>Form3 - Opinião sobre alguma obra</Typography>
             <Box
                onSubmit={onSubmit}
                component="form"
@@ -43,11 +42,18 @@ export function Form3() {
                autoComplete="off"
             >
                <Grid container spacing={2} rowSpacing={0.5}>
-                  <Grid item xs={6}>
-                     <Campo text='Titulo da postagem' onChange={onChange} />
+                  <Grid item xs={8}>
+                     <SelectLabels onChange={selectChange} />
                   </Grid>
+                  
                   <Grid item xs={6}>
-                     <SelectLabels onChange={selectChange}/>
+                     <Rating
+                        name="nota"
+                        value={campos.nota}
+                        onChange={(event, newValue) => {
+                           setCampos({ ...campos, ['nota']: newValue as number})
+                        }}
+                     />
                   </Grid>
                   <Grid item xs={12}>
                      <TextField
@@ -56,9 +62,9 @@ export function Form3() {
                         required
                         multiline={true}
                         rows={8}
-                        id='descricao'
+                        id='opiniao'
                         onChange={onChange}
-                        label='Descrição da postagem'
+                        label='Sua opinião'
                      />
                   </Grid>
                   <Grid item xs={12}>
