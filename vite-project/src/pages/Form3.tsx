@@ -5,9 +5,20 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Grid, Rating, SelectChangeEvent, TextField } from "@mui/material";
 import { SelectLabels } from '../components/select'
+import { myFetch } from '../utils/request.js';
+import { Regex } from '../utils/regex.js'
+import { SnackAlert } from '../components/alert'
+
+const regex = new Regex()
 
 export function Form3() {
+   const list = ['One Piece','Game of Thrones','Ozarks']
 
+   const [open, setOpen] = useState(false);
+   const [snack, setSnack] =  useState({
+      message: '',
+      type: ''
+   })
    const [campos, setCampos] = useState({
       obra: '',
       nota: 0,
@@ -27,6 +38,17 @@ export function Form3() {
    function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
       ev.preventDefault()
       console.log(campos)
+      const obraTest = regex.minMaxTest(6, 30, campos['obra'])
+      const opiniaoTest = regex.minMaxTest(12, 300, campos['opiniao'])
+      const notaTest = campos['nota'] != 0
+
+      if (obraTest && opiniaoTest && notaTest) {
+         setSnack({ message: 'Comentário adicionado', type: 'success' })
+         myFetch(`http://localhost:8081/obra/comentario/${campos['obra']}/${campos['nota']}/${campos['opiniao']}`, 'POST')
+      } else {
+         setSnack({ message: 'Escolha uma obra, adicine uma nota e opinião entre 12 à 300 caracteres!', type: 'error' })
+      }
+      setOpen(true)
    }
 
    return (
@@ -43,7 +65,7 @@ export function Form3() {
             >
                <Grid container spacing={2} rowSpacing={0.5}>
                   <Grid item xs={8}>
-                     <SelectLabels onChange={selectChange} />
+                     <SelectLabels list = {list} label="Obra" onChange={selectChange} />
                   </Grid>
                   
                   <Grid item xs={6}>
@@ -72,6 +94,8 @@ export function Form3() {
                   </Grid>
                </Grid>
             </Box>
+            <SnackAlert open={open} setOpen={setOpen} message={snack.message} type={snack.type} />
+
          </Container>
       </div>
    )

@@ -8,10 +8,15 @@ import { myFetch } from '../utils/request.js';
 import { Regex } from '../utils/regex.js'
 import { SnackAlert } from '../components/alert'
 
-const regex2 = new Regex()
+const regex = new Regex()
 
 export function Form1() {
 
+   const [open, setOpen] = useState(false);
+   const [snack, setSnack] =  useState({
+      message: '',
+      type: ''
+   })
    const [campos, setCampos] = useState({
       nome: '',
       email: '',
@@ -28,18 +33,19 @@ export function Form1() {
 
    function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
       ev.preventDefault()
-      const emailTest = regex2.emailTest(campos['email'])
-      const nomeTest = regex2.minMaxTest(6,12,campos['nome'])
-      const senhaTest = regex2.minMaxTest(6,12,campos['senha'])
+      console.log(campos)
+      const emailTest = regex.emailTest(campos['email'])
+      const nomeTest = regex.minMaxTest(6,30,campos['nome'])
+      const senhaTest = regex.minMaxTest(6,12,campos['senha'])
       const confirmarSenhaTest = campos['senha'] == campos['confirmarsenha']
-      console.log(emailTest, nomeTest, senhaTest, confirmarSenhaTest)
 
       if (emailTest && nomeTest && senhaTest && confirmarSenhaTest) {
-         <SnackAlert message = 'Usuário criado com sucesso!' type= 'success'/>
+         setSnack({message: 'Usuário criado com sucesso',type: 'success'})
          myFetch(`http://localhost:8081/users/${campos['nome']}/${campos['email']}/${campos['senha']}`, 'POST')
       }else{
-         <SnackAlert message = 'Algum dos campos está inválido!' type= 'error'/>
+         setSnack({message: 'Algum dos campos está inválido!',type: 'error'})
       }
+      setOpen(true)
    }
 
    return (
@@ -69,6 +75,7 @@ export function Form1() {
                   <Button sx={{ mt: 3, mb: 2 }} variant="contained" type="submit" fullWidth>Cadastrar-se</Button>
                </Box>
             </Box>
+            <SnackAlert open = {open} setOpen = {setOpen} message = {snack.message} type= {snack.type}/>
          </Container>
       </div>
    )

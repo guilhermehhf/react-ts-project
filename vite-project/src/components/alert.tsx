@@ -5,6 +5,8 @@ import React, { useState } from "react";
 type SnackAlertType = {
     message:string,
     type:string
+    open:boolean
+    setOpen:React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function SnackAlert(props:SnackAlertType ) {
@@ -15,18 +17,18 @@ export function SnackAlert(props:SnackAlertType ) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
-    const [open, setOpen] = React.useState(false);
+    
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpen(false);
+        props.setOpen(false);
     };
 
     return (
     <div>
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Snackbar open={props.open} autoHideDuration={2000} onClose={handleClose}>
             <Alert onClose={handleClose} severity={props.type as AlertColor || 'warning'} sx={{ width: '100%' }}>
                 {props.message}
             </Alert>
