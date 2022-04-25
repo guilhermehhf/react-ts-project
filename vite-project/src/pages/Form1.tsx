@@ -35,7 +35,7 @@ export function Form1() {
       ev.preventDefault()
       console.log(campos)
       const emailTest = regex.emailTest(campos['email'])
-      const nomeTest = regex.minMaxTest(6,30,campos['nome'])
+      const nomeTest = regex.minMaxTest(3,30,campos['nome'])
       const senhaTest = regex.minMaxTest(6,12,campos['senha'])
       const confirmarSenhaTest = campos['senha'] == campos['confirmarsenha']
 

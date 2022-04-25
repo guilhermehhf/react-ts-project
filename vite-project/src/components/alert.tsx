@@ -17,7 +17,7 @@ export function SnackAlert(props:SnackAlertType ) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
-    
+
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -28,7 +28,7 @@ export function SnackAlert(props:SnackAlertType ) {
 
     return (
     <div>
-        <Snackbar open={props.open} autoHideDuration={2000} onClose={handleClose}>
+        <Snackbar open={props.open} onClose={handleClose}>
             <Alert onClose={handleClose} severity={props.type as AlertColor || 'warning'} sx={{ width: '100%' }}>
                 {props.message}
             </Alert>
